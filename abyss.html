@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interesting.</title>
+    <script src = "mainsource.js" defer></script>
+    <!--potentially will add later for easy auto element coloring-->
+    <!--<link href = "style.css" type = "text/css" rel = "stylesheet">-->
+
+    <style>
+        .box {
+            width:0px;
+            height:0px;
+            margin:50px auto;
+        }
+        body {
+            background-color: rgb(0, 0, 0);
+        }
+        .text {
+            color: white;
+        }
+        h1 {
+            text-align: center;
+            color: black;
+        }
+    </style>
+</head>
+<body style="background-image: url('abyss_bg.png');">
+    <div id = "Character" class = "box"></div>
+    <h1 class = "text" id = "Steps"></h1>
+    <h1 class = "text" id = "appearables2"></h1>
+    <img id = "img" src= "fella1.png"> 
+
+    <h1>
+        Hello.
+    </h1>
+
+    <img id = "img2" src= "ring_0.png"> 
+
+    <script>
+        var WDown = false;
+        var ADown = false;
+        var SDown = false;
+        var DDown = false;
+        let Steps = 0;
+        var SwitchEnv = false;
+
+        const img = document.getElementById("img");
+        var Object = document.getElementById("Character");
+        const Obj = document.getElementById("img2");
+
+        Object.appendChild(img);
+        Obj.addEventListener("click", BackgroundVis);
+
+        function ResMovement() {
+            DDown = true;
+            ADown = true;
+            SDown = true;
+            WDown = true;
+            var Object = document.getElementById("Character");
+            const rect = Object.getBoundingClientRect();
+            Object.style.position = "absolute";
+            DDown = false;
+            ADown = false;
+            SDown = false;
+            WDown = false;
+            Object.style.top = "350px";
+            Object.style.left = "650px";
+        }
+
+        function MoveObject() {
+            let X = 0;
+            let Y = 0;
+            const ScreenWidth = window.screen.width; // 1440
+            const ScreenHeight = window.screen.height; // 900
+            var Object = document.getElementById("Character");
+            const rect = Object.getBoundingClientRect();
+            Object.style.position = "absolute";
+
+            if (WDown === true) {
+                Y = 50
+                Object.style.top = parseInt(Object.style.top) - Y + "px";
+            }
+            if (ADown === true) {
+                X = -50;
+                Object.style.left = parseInt(Object.style.left) + X + "px";
+            }
+            if (SDown === true) {
+                Y = 5
+                Object.style.top = rect.y + Y + "px";
+            }
+            if (DDown === true) {
+                X = 50;
+                Object.style.left = rect.x + X + "px";
+            }
+
+            const currentpos = Object.getBoundingClientRect();
+
+            if (1440 - currentpos.x < 5) {
+                alert("too far");
+                ResMovement();
+                window.location.href = "index.html";
+            }
+            if (1440 / 17 - -currentpos.x < 5) {
+                alert("too far");
+                ResMovement();
+                window.location.href = "index.html";
+            }
+
+            if (900 / 1.1 - currentpos.y < 5) {
+                alert("too far");
+                ResMovement();
+                window.location.href = "index.html";
+            }
+
+            if (900 / 18 - -currentpos.y < 5) {
+                alert("too far");
+                ResMovement();
+                window.location.href = "index.html";
+            }
+        }
+       
+        function CheckKey(Input) {
+            var DoneMove = false;
+            if (Input.keyCode === 87) {
+                WDown = true;
+                DoneMove = true;
+            }  
+            if (Input.keyCode == 65) {
+                ADown = true;
+                DoneMove = true;
+           }
+            if (Input.keyCode == 83) {
+                SDown = true;
+                DoneMove = true;
+            }
+            if (Input.keyCode == 68) {
+                DDown = true;
+                DoneMove = true;
+            }
+            MoveObject();
+            if (DoneMove) {
+                Steps++;
+            }
+            if (Steps > 99) {
+                document.getElementById("Steps").style.color = "red";
+                document.getElementById("Steps").innerHTML = "Steps-Taken: " + Steps + ".";
+            } else {
+                document.getElementById("Steps").innerHTML = "Steps-Taken: " + Steps;
+            }
+        }
+
+        function CheckKeyUp(Input) {
+            if (Input.keyCode === 87) {
+                WDown = false;
+            } 
+            if (Input.keyCode == 65) {
+                ADown = false;
+            }
+            if (Input.keyCode == 83) {
+                SDown = false;
+            }
+            if (Input.keyCode == 68) {
+                DDown = false;
+            }
+        }
+
+        function BackgroundVis() {
+            if (SwitchEnv) {
+                return;
+            } else {
+                SwitchEnv = true;
+                alert("welcome back.");
+                document.body.style.backgroundColor = "red";
+                alert("see you next time.")
+                window.location.href = "abyss_invert.html";
+            }
+        }
+
+        // Resets movement to prevent bugs off start-up
+
+        DDown = true;
+        ADown = true;
+        SDown = true;
+        WDown = true;
+        MoveObject();
+        DDown = false;
+        ADown = false;
+        SDown = false;
+        WDown = false;
+
+        // Connect Key-Events
+        
+        addEventListener("keydown", CheckKey)
+        addEventListener("keyup", CheckKeyUp)
+    </script>
+</body>

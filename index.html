@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interesting.</title>
+    <script src = "mainsource.js" defer></script>
+    <!--potentially will add later for easy auto element coloring-->
+    <!--<link href = "style.css" type = "text/css" rel = "stylesheet">-->
+
+    <style>
+        .box {
+            width:0px;
+            height:0px;
+            margin:50px auto;
+        }
+        body {
+            background-color: rgb(132, 132, 132);
+        }
+        .text {
+            color: rgb(0, 0, 0);
+            animation: colorswitch2 6s linear infinite;
+        }
+        .bground {
+            animation: colorswitch 6s linear infinite;
+        }
+        .rotbox {
+            animation: rotating 2s linear infinite;
+            width:150px;
+            height:150px;
+            margin:50px auto;
+            border: 1px solid rgb(255, 255, 255);
+        }
+        @keyframes rotating {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        @keyframes colorswitch {
+            0% {
+                background-color: rgb(132, 132, 132);
+            }
+            50% {
+                background-color: rgb(226, 225, 225);
+            }
+            75% {
+                background-color: rgb(255, 255, 255);
+            }
+            100% {
+                background-color: rgb(132, 132, 132);
+            }
+        }
+        @keyframes colorswitch2 {
+            0% {
+                color: rgb(1);
+            }
+            50% {
+                color: rgb(255, 255, 255);
+            }
+            75% {
+                color: rgb(115, 115, 115);
+            }
+            100% {
+                color: rgb();
+            }
+        }
+    </style>
+</head>
+<body class = "bground">
+   <div id = "Character" class = "box"></div>
+    <img class = "character" id = "img" src= "funny.gif"> 
+    <h1 class = "text" id = "Steps"></h1>
+    <div onclick="CountDown(this)" class = "rotbox" id = "rotbox"> 
+ 
+    <script>
+        var WDown = false;
+        var ADown = false;
+        var SDown = false;
+        var DDown = false;
+        let Steps = 0;
+
+        const img = document.getElementById("img");
+        var Object = document.getElementById("Character");
+        var spinny = document.getElementById("rotbox");
+        var steptext = document.getElementById("Steps");
+
+        Object.appendChild(img);
+        spinny.appendChild(steptext);
+
+        // Movement
+
+        function ResMovement() {
+            DDown = true;
+            ADown = true;
+            SDown = true;
+            WDown = true;
+            var Object = document.getElementById("Character");
+            const rect = Object.getBoundingClientRect();
+            Object.style.position = "absolute";
+            DDown = false;
+            ADown = false;
+            SDown = false;
+            WDown = false;
+            Object.style.top = "100px";
+            Object.style.left = "650px";
+        }
+
+        function MoveObject() {
+            let X = 0;
+            let Y = 0;
+            const ScreenWidth = window.screen.width; // 1440
+            const ScreenHeight = window.screen.height; // 900
+            var Object = document.getElementById("Character");
+            const rect = Object.getBoundingClientRect();
+            Object.style.position = "absolute";
+
+            if (WDown === true) {
+                Y = 50
+                Object.style.top = parseInt(Object.style.top) - Y + "px";
+            }
+            if (ADown === true) {
+                X = -50;
+                Object.style.left = parseInt(Object.style.left) + X + "px";
+            }
+            if (SDown === true) {
+                Y = 5
+                Object.style.top = rect.y + Y + "px";
+            }
+            if (DDown === true) {
+                X = 50;
+                Object.style.left = rect.x + X + "px";
+            }
+
+            const currentpos = Object.getBoundingClientRect();
+
+            if (1440 - currentpos.x < 5) {
+                alert("too far");
+                window.location.href = "abyss.html";
+                ResMovement();
+            }
+            if (1440 / 17 - -currentpos.x < 5) {
+                alert("too far");
+                ResMovement();
+            }
+
+            if (900 / 1.1 - currentpos.y < 5) {
+                alert("too far");
+                ResMovement();
+            }
+
+            if (900 / 18 - -currentpos.y < 5) {
+                alert("too far");
+                ResMovement();
+            }
+        }
+       
+        function CheckKey(Input) {
+            var DoneMove = false;
+            if (Input.keyCode === 87) {
+                WDown = true;
+                DoneMove = true;
+            }  
+            if (Input.keyCode == 65) {
+                ADown = true;
+                DoneMove = true;
+           }
+            if (Input.keyCode == 83) {
+                SDown = true;
+                DoneMove = true;
+            }
+            if (Input.keyCode == 68) {
+                DDown = true;
+                DoneMove = true;
+            }
+            MoveObject();
+            if (DoneMove) {
+                Steps++;
+            } else { // potential Walk / Idle Resumption
+
+            }
+            document.getElementById("Steps").innerHTML = "Steps-Taken: " + Steps;
+        }
+
+        function CheckKeyUp(Input) {
+            if (Input.keyCode === 87) {
+                WDown = false;
+            } 
+            if (Input.keyCode == 65) {
+                ADown = false;
+            }
+            if (Input.keyCode == 83) {
+                SDown = false;
+            }
+            if (Input.keyCode == 68) {
+                DDown = false;
+            }
+        }
+
+        function CountDown(element) {
+            for (let i = 0; i < 4; i++) {
+                if (i > 0) {
+                    alert(i)
+                }
+                if (i == 3) {
+                    alert("funny message!");
+                }
+            }
+        }
+
+        // Resets movement to prevent bugs off start-up
+
+        DDown = true;
+        ADown = true;
+        SDown = true;
+        WDown = true;
+        MoveObject();
+        DDown = false;
+        ADown = false;
+        SDown = false;
+        WDown = false;
+
+        // Connect Key-Events
+        
+        addEventListener("keydown", CheckKey)
+        addEventListener("keyup", CheckKeyUp)
+    </script>
+</body>

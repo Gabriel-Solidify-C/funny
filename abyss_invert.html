@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interesting.</title>
+    <script src = "mainsource.js" defer></script>
+    <!--potentially will add later for easy auto element coloring-->
+    <!--<link href = "style.css" type = "text/css" rel = "stylesheet">-->
+
+    <style>
+        .box {
+            width:0px;
+            height:0px;
+            margin:50px auto;
+        }
+        body {
+            background-color: rgb(255, 255, 255);
+        }
+        .text {
+            color: #000000;
+        }
+        h1 {
+            text-align: center;
+            color: black;
+        }
+        h2 {
+            text-align: center;
+            color: rgb(4, 102, 102);
+        }
+    </style>
+</head>
+<body style="background-image: url('invert_bg.png');">
+    <div id = "Character" class = "box"></div>
+    <h1 class = "text" id = "Steps"></h1>
+    <img width="85px" id = "img" src= "fella_inv.png"> 
+    <img width="275px" id = "img2" src= "ring_0_invert.png"> 
+
+    <h1>
+        About the Creator:
+    </h1>
+
+    <h2>
+        Created by Gabriel C, this website is designed to see what you can do with Javascript, and what it can't do.
+        I.E: A moveable Character.
+    </h2>
+
+    <h2>
+        This was originally going to be a actual video game, but that plan soon ended when I'd realised how limiting Javascript is, and what it can do.
+    </h2>
+
+    <h2>
+        Like, how there's no built in wait function that can wait for a certain amount of time, there isn't an easy way to move objects, there isn't alot of things, it was a challenge just to even make this character move, even then it's still jank in one way or another.
+    </h2>
+
+    <h2>
+        Hell, there was even supposed to be animated sprites, I'd animated like 3. (You can find these unused in the files, sad.)
+    </h2>
+
+    <h2>
+        Update: [12/11/24] I believe I found a resolve to my animated sprites issue, you'll see if so.
+    </h2>
+
+    <img id = "shine" width = "150px" src = "staR.jpg">
+
+    <script>
+        var WDown = false;
+        var ADown = false;
+        var SDown = false;
+        var DDown = false;
+        let Steps = 0;
+        var SwitchEnv = false;
+
+        const img = document.getElementById("img");
+        var Object = document.getElementById("Character");
+        var Star = document.getElementById("shine");
+        const Ring = document.getElementById("img2");
+
+        Object.appendChild(img);
+        Ring.addEventListener("click", BackgroundVis);
+
+        Star.addEventListener("click", function() {
+            alert("...")
+            window.location.href = "shinefield.html";
+        });
+
+       function ResMovement() {
+            DDown = true;
+            ADown = true;
+            SDown = true;
+            WDown = true;
+            var Object = document.getElementById("Character");
+            const rect = Object.getBoundingClientRect();
+            Object.style.position = "absolute";
+            DDown = false;
+            ADown = false;
+            SDown = false;
+            WDown = false;
+            Object.style.top = "350px";
+            Object.style.left = "650px";
+        }
+
+        function MoveObject() {
+            let X = 0;
+            let Y = 0;
+            const ScreenWidth = window.screen.width; // 1440
+            const ScreenHeight = window.screen.height; // 900
+            var Object = document.getElementById("Character");
+            const rect = Object.getBoundingClientRect();
+            Object.style.position = "absolute";
+
+            if (WDown === true) {
+                Y = 50
+                Object.style.top = parseInt(Object.style.top) - Y + "px";
+            }
+            if (ADown === true) {
+                X = -50;
+                Object.style.left = parseInt(Object.style.left) + X + "px";
+            }
+            if (SDown === true) {
+                Y = 5
+                Object.style.top = rect.y + Y + "px";
+            }
+            if (DDown === true) {
+                X = 50;
+                Object.style.left = rect.x + X + "px";
+            }
+
+            const currentpos = Object.getBoundingClientRect();
+
+            if (1440 - currentpos.x < 5) {
+                alert("too far");
+                ResMovement();
+               // window.location.href = "index.html";
+            }
+            if (1440 / 17 - -currentpos.x < 5) {
+                alert("too far");
+                ResMovement();
+              //  window.location.href = "index.html";
+            }
+
+            if (900 / .75 - currentpos.y < 5) {
+                alert("too far");
+                ResMovement();
+              //  window.location.href = "index.html";
+            }
+
+            if (900 / 6 - -currentpos.y < 5) {
+                alert("too far");
+                ResMovement();
+              //  window.location.href = "index.html";
+            }
+        }
+       
+        function CheckKey(Input) {
+            var DoneMove = false;
+            if (Input.keyCode === 87) {
+                WDown = true;
+                DoneMove = true;
+            }  
+            if (Input.keyCode == 65) {
+                ADown = true;
+                DoneMove = true;
+           }
+            if (Input.keyCode == 83) {
+                SDown = true;
+                DoneMove = true;
+            }
+            if (Input.keyCode == 68) {
+                DDown = true;
+                DoneMove = true;
+            }
+            MoveObject();
+            if (DoneMove) {
+                Steps++;
+            }
+            if (Steps > 99) {
+                document.getElementById("Steps").style.color = "black";
+                document.getElementById("Steps").innerHTML = "Steps-Taken: " + Steps + ".";
+            } else {
+                document.getElementById("Steps").innerHTML = "Steps-Taken: " + Steps;
+            }
+        }
+
+        function CheckKeyUp(Input) {
+            if (Input.keyCode === 87) {
+                WDown = false;
+            } 
+            if (Input.keyCode == 65) {
+                ADown = false;
+            }
+            if (Input.keyCode == 83) {
+                SDown = false;
+            }
+            if (Input.keyCode == 68) {
+                DDown = false;
+            }
+        }
+
+        function BackgroundVis() {
+            if (SwitchEnv) {
+                return;
+            } else {
+                SwitchEnv = true;
+                alert("see you later.");
+                document.body.style.backgroundColor = "aqua";
+                alert("until we meet again!")
+                window.location.href = "abyss.html";
+            }
+        }
+
+        // Resets movement to prevent bugs off start-up
+
+        DDown = true;
+        ADown = true;
+        SDown = true;
+        WDown = true;
+        MoveObject();
+        DDown = false;
+        ADown = false;
+        SDown = false;
+        WDown = false;
+
+        // Connect Key-Events
+        
+        addEventListener("keydown", CheckKey)
+        addEventListener("keyup", CheckKeyUp)
+    </script>
+</body>

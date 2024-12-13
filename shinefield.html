@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interesting.</title>
+    <script src = "mainsource.js" defer></script>
+    <!--potentially will add later for easy auto element coloring-->
+    <!--<link href = "style.css" type = "text/css" rel = "stylesheet">-->
+
+    <style>
+        .box {
+            width:0px;
+            height:0px;
+            margin:50px auto;
+        }
+        body {
+            background-color: rgb(255, 253, 201);
+        }
+        .sdguardian {
+            animation: guardian 2s infinite;
+        }
+        .text {
+            color: #000000;
+        }
+        h1 {
+            text-align: center;
+            color: black;
+        }
+        h2 {
+            text-align: center;
+            color: rgb(4, 102, 102);
+        }
+        @keyframes guardian {
+            0% {
+                background-image: url("stardust_0.png");
+            }
+            16.6666666667% {
+                background-image: url("stardust_1.png");
+            }
+
+            33.3333333333% {
+                background-image: url("stardust_2.png");
+            }
+
+            50% {
+                background-image: url("stardust_3.png");
+            }
+
+            66.6666666667% {
+                background-image: url("stardust_4.png");
+            }
+
+            83.3333333333% {
+                background-image: url("stardust_5.png");
+            }
+
+            100% {
+                background-image: url("stardust_6.png");
+            }
+        }
+    </style>
+</head>
+<body style="background-image: url('spinstar.gif');">
+    <div id = "Character" class = "box"></div>
+    <h1 class = "text" id = "Steps"></h1>
+    <img width="85px" id = "img" src= "fella_inv.png"> 
+
+    <img width="85px" id = "stardust" src= "stardust_6.png"> 
+
+    <script>
+        var WDown = false;
+        var ADown = false;
+        var SDown = false;
+        var DDown = false;
+        let Steps = 0;
+        var SwitchEnv = false;
+
+        const img = document.getElementById("img");
+        var Object = document.getElementById("Character");
+        var Guardian = document.getElementById("stardust");
+
+        Object.appendChild(img);
+        Guardian.style.position = "absolute";
+        Guardian.style.top = "350px";
+        Guardian.style.left = "525px";
+        Guardian.src = "https://piskel-imgstore-b.appspot.com/img/87ad034a-b7f5-11ef-bd06-29b21ce793c9.gif";
+
+        var name = prompt("tell me, who are you?");
+
+        if (name === "you") {
+            alert("You are not I.")
+        }  else if (name === "You") {
+            alert("You are not I.")
+        }  else if (name === "YOu") {
+            alert("You are not I.")
+        }  else if (name === "YOU") {
+            alert("You are not I.")
+        }  else if (name === "yOu") {
+            alert("You are not I.")
+        }  else if (name === "yoU") {
+            alert("You are not I.")
+        }  else if (name === "I don't know") {
+            alert("That's alright. I don't remember my birth name either.");
+        }  else if (name === "idk") {
+            alert("That's alright. I don't remember my birth name either.");
+        }
+        else {
+            alert(name + "..? what a fine name.");
+        }
+
+        var answered = false;
+
+        Guardian.addEventListener("click", function() {
+            if (answered === true ) {
+                var response = prompt("Would you like to return?");
+                if (response === "Yes") {
+                    alert("Very well.");
+                    window.location.href = "abyss_invert.html";
+                } else if (response === "yes") {
+                    alert("Very well.");
+                    window.location.href = "abyss_invert.html";
+                } else if (response === "No") {
+                    alert("Take your time.");
+                } else if (response === "no") {
+                    alert("Take your time.");
+                } else {
+                    alert("i'll be waiting.")
+                }
+            } else {
+                var response = prompt("Do you ever wonder: What lies for us once all is said and done? You may be satiated when you're finished with all you have to do, but what's next?");
+                if (response === "Yes") {
+                    alert("I, aswell do too.");
+                } else if (response === "yes") {
+                    alert("I, aswell do too.");
+                } else if (response === "No") {
+                    alert("Consider it for a minute.");
+                } else if (response === "no") {
+                    alert("Think about it for a minute then.");
+                } else {
+                    alert("hm.")
+                }
+            }
+            answered = true;
+         })
+
+       function ResMovement() {
+            DDown = true;
+            ADown = true;
+            SDown = true;
+            WDown = true;
+            var Object = document.getElementById("Character");
+            const rect = Object.getBoundingClientRect();
+            Object.style.position = "absolute";
+            DDown = false;
+            ADown = false;
+            SDown = false;
+            WDown = false;
+            Object.style.top = "350px";
+            Object.style.left = "650px";
+        }
+
+        function MoveObject() {
+            let X = 0;
+            let Y = 0;
+            const ScreenWidth = window.screen.width; // 1440
+            const ScreenHeight = window.screen.height; // 900
+            var Object = document.getElementById("Character");
+            const rect = Object.getBoundingClientRect();
+            Object.style.position = "absolute";
+
+            if (WDown === true) {
+                Y = 50
+                Object.style.top = parseInt(Object.style.top) - Y + "px";
+            }
+            if (ADown === true) {
+                X = -50;
+                Object.style.left = parseInt(Object.style.left) + X + "px";
+            }
+            if (SDown === true) {
+                Y = 5
+                Object.style.top = rect.y + Y + "px";
+            }
+            if (DDown === true) {
+                X = 50;
+                Object.style.left = rect.x + X + "px";
+            }
+
+            const currentpos = Object.getBoundingClientRect();
+
+            if (1440 - currentpos.x < 5) {
+                alert("too far");
+                ResMovement();
+            }
+            if (1440 / 17 - -currentpos.x < 5) {
+                alert("too far");
+                ResMovement();
+            }
+
+            if (900 / 1.1 - currentpos.y < 5) {
+                alert("too far");
+                ResMovement();
+            }
+
+            if (900 / 18 - -currentpos.y < 5) {
+                alert("too far");
+                ResMovement();
+            }
+        }
+       
+        function CheckKey(Input) {
+            var DoneMove = false;
+            if (Input.keyCode === 87) {
+                WDown = true;
+                DoneMove = true;
+            }  
+            if (Input.keyCode == 65) {
+                ADown = true;
+                DoneMove = true;
+           }
+            if (Input.keyCode == 83) {
+                SDown = true;
+                DoneMove = true;
+            }
+            if (Input.keyCode == 68) {
+                DDown = true;
+                DoneMove = true;
+            }
+            MoveObject();
+            if (DoneMove) {
+                Steps++;
+            }
+            if (Steps > 99) {
+                document.getElementById("Steps").style.color = "black";
+                document.getElementById("Steps").innerHTML = "Steps-Taken: " + Steps + ".";
+            } else {
+                document.getElementById("Steps").innerHTML = "Steps-Taken: " + Steps;
+            }
+        }
+
+        function CheckKeyUp(Input) {
+            if (Input.keyCode === 87) {
+                WDown = false;
+            } 
+            if (Input.keyCode == 65) {
+                ADown = false;
+            }
+            if (Input.keyCode == 83) {
+                SDown = false;
+            }
+            if (Input.keyCode == 68) {
+                DDown = false;
+            }
+        }
+
+        // Resets movement to prevent bugs off start-up
+
+        ResMovement();
+
+        // Connect Key-Events
+        
+        addEventListener("keydown", CheckKey)
+        addEventListener("keyup", CheckKeyUp)
+    </script>
+</body>
